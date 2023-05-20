@@ -4,7 +4,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark main-color py-3">
       <div className="container-fluid">
-        <span className="navbar-brand">Moose Library</span>
+        <span className="navbar-brand">Moose Records</span>
         <button
           className="navbar-toggler"
           type="button"
