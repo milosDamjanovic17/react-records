@@ -1,54 +1,55 @@
 import React, {useState, useEffect} from "react";
 import ReturnRecord from "./ReturnRecord";
 import SpinnerLoading from "../../../Utils/SpinnerLoading";
+import RecordModel from "../../../models/Record";
 
 const Carousel = () => {
 
-   const [books, setBooks] = useState<BookModel[]>([]);
+   const [records, setRecords] = useState<RecordModel[]>([]);
    const [isLoading, setIsLoading] = useState(true); // state for showing loading screen during the component fetching the data from backend API
    const [httpError, setHttpError] = useState(null);
  
  
    useEffect(() => {
  
-     async function fetchBooks() {
-       // fetch data from backend API path, we want only 9 books to be shown in our Carousel
-       const baseUrl: string = 'http://localhost:8080/api/books';
+     async function fetchRecords() {
+       // fetch data from backend API path, we want only 9 records to be shown in our Carousel
+       const baseUrl: string = 'http://localhost:8080/api/records';
  
        const url: string = `${baseUrl}?page=0&size=9`;
  
        const response = await fetch(url);
  
        if(!response.ok){
-         throw new Error('Something went wrong!');
+         throw new Error('Whoops! Something went wrong...');
        }
  
        const responseJson = await response.json(); // convert response to json file
  
-       const responseData = responseJson._embedded.books;
+       const responseData = responseJson._embedded.records;
  
-       const loadedBooks: BookModel[] = []; // instance of BookModel array
+       const loadedRecords: RecordModel[] = []; // instance of RecordModel array
  
-       // populate loadedBooks collection
+       // populate loadedRecords collection
        for(const key in responseData){
-         loadedBooks.push({
+         loadedRecords.push({
            id: responseData[key].id,
            title: responseData[key].title,
-           author: responseData[key].author,
+           artist: responseData[key].artist,
            description: responseData[key].description,
            copies: responseData[key].copies,
            copiesAvailable: responseData[key].copiesAvailable,
-           category: responseData[key].category,
+           genre: responseData[key].genre,
            img: responseData[key].img,
          })
        }
  
-       setBooks(loadedBooks);
+       setRecords(loadedRecords);
        setIsLoading(false);
      };
  
      // catch any errors during data fetch
-     fetchBooks().catch((error: any) => {
+     fetchRecords().catch((error: any) => {
        setIsLoading(false);
        setHttpError(error.message)
      })
@@ -70,12 +71,12 @@ const Carousel = () => {
      )
    }
 
-
+   
    return(
 
       <div className="container mt-5" style={{ height: 550 }}>
       <div className="homepage-carousel-title">
-        <h3>Find your next favourite book here!</h3>
+        <h3>Find your next favourite record here!</h3>
       </div>
       <div
         id="carouselExampleControls"
@@ -87,22 +88,22 @@ const Carousel = () => {
          <div className="carousel-inner">
           <div className="carousel-item active">
             <div className="row d-flex justify-content-center align-items-center">
-              {books.slice(0,3).map(book => (
-                <ReturnRecord book={book} key= {book.id} />
+              {records.slice(0,3).map(rec => (
+                <ReturnRecord record={rec} key= {rec.id} />
               ))}
             </div>
           </div>
           <div className="carousel-item">
             <div className="row d-flex justify-content-center align-items-center">
-              {books.slice(3,6).map(book => (
-                <ReturnRecord book={book} key= {book.id} />
+              {records.slice(3,6).map(rec => (
+                <ReturnRecord record={rec} key= {rec.id} />
               ))}
             </div>
           </div>
           <div className="carousel-item">
             <div className="row d-flex justify-content-center align-items-center">
-              {books.slice(6,9).map(book => (
-                <ReturnRecord book={book} key= {book.id} />
+              {records.slice(6,9).map(rec => (
+                <ReturnRecord record={rec} key= {rec.id} />
               ))}
             </div>
           </div>
@@ -136,7 +137,7 @@ const Carousel = () => {
       {/* Mobile View */}
       <div className="d-lg-none mt-3">
         <div className="row d-flex justify-content-center align-items-center">
-          <ReturnRecord book={books[7]} key={books[0].id}/>
+          {/* <ReturnRecord record={records[1]} key={records[1].id}/> */}
         </div>
       </div>
       {/* View More btn */}

@@ -1,5 +1,5 @@
 
-class Record { 
+class RecordModel { 
 
    id: number;
    title: string;
@@ -23,4 +23,4 @@ class Record {
 
 }
 
-export default Record;
+export default RecordModel;
