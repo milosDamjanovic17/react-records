@@ -79,7 +79,7 @@ const SearchBooksPage = () => {
                </div>
                <div className='col-4'>
                   <div className='dropdown'>
-                     <button className='btn btn-secondary dropdown-toggle' 
+                     <button className='btn btn-secondary dropdown-toggle mt-1' 
                              type='button' 
                              id='dropdownMenuButton1' 
                              data-bs-toggle='dropdown'
