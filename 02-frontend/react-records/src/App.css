@@ -3,9 +3,11 @@
 }
 
 .header {
-  background-image: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url("./Images/PublicImages/image-2.jpg");
+  background-image: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url("./Images/PublicImages/image-22.avif");
   opacity: var(--mainOpacity);
   height: 25em !important;
+  background-size: cover;
+  background-position: left 20% bottom 30%;
 }
 
 .dark-overlay {
