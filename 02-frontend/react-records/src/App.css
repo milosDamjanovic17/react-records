@@ -40,6 +40,7 @@ background-color: #1b1b3a;
 
 .lost-image {
   background-image: url("./Images/PublicImages/image-3.jpg");
+  background-position: left 5% top 20%;
   height: 25em !important;
   width: "720"
 }
