@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import RecordModel from '../../models/Record';
 import SpinnerLoading from '../../Utils/SpinnerLoading';
 import SearchRecord from './components/SearchRecord';
+import Pagination from '../../Utils/Pagination';
 
 const SearchBooksPage = () => {
 
@@ -9,13 +10,19 @@ const SearchBooksPage = () => {
    const[isLoading, setIsLoading] = useState(true);
    const[httpError, setHttpError] = useState(null);
 
+   const [currentPage, setCurrentPage] = useState(1);
+   const [recordsPerPage, setRecordsPerPage] = useState(5);
+   const [totalRecordsAmount, setTotalRecordsAmount] = useState(0);
+
+   const [totalPages, setTotalPages] = useState(0);
+
    useEffect(() => {
 
       async function fetchRecords() {
          
          const baseUrl: string = "http://localhost:8080/api/records";
 
-         const renderUrl = `${baseUrl}?page=0&size=5`
+         const renderUrl = `${baseUrl}?page=${currentPage - 1}&size=${recordsPerPage}`
 
          const response = await fetch(renderUrl);
 
@@ -26,6 +33,9 @@ const SearchBooksPage = () => {
          const responseJson = await response.json();
 
          const responseData = responseJson._embedded.records;
+
+         setTotalRecordsAmount(responseJson.page.totalElements);
+         setTotalPages(responseJson.page.totalPages);
 
          const loadedRecords: RecordModel[] = [];
 
@@ -52,8 +62,8 @@ const SearchBooksPage = () => {
          setHttpError(error.message);
       })
 
-      
-   },[])
+      window.scrollTo(0,0);
+   }, [currentPage])
    
    if(isLoading){
       return <SpinnerLoading />
@@ -64,6 +74,14 @@ const SearchBooksPage = () => {
          <p>{httpError}</p>
       </div>
    }
+
+   const indexOfLastRecord: number = currentPage * recordsPerPage;
+   const indexOfFirstBook: number = indexOfLastRecord - recordsPerPage;
+
+   let lastItem = recordsPerPage * currentPage <= totalRecordsAmount ?
+      recordsPerPage * currentPage : totalRecordsAmount;
+
+   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
    return(
       <div>
@@ -117,14 +135,17 @@ const SearchBooksPage = () => {
                   </div>
                </div>
                <div className='mt-3'>
-                  <h5>Number of records: (10)</h5>
+                  <h5>Number of records: ({totalRecordsAmount})</h5>
                </div>
                <p>
-                  1 to 5 of 10 records:
+                  {indexOfFirstBook + 1} to {lastItem} of {totalRecordsAmount} records:
                </p>
                {records.map(rec => (
                   <SearchRecord record = {rec} key={rec.id} />
                ))}
+               {totalPages > 1 && 
+                  <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
+               }
             </div>
          </div>
       </div>
