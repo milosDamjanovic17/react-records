@@ -34,7 +34,7 @@ public class CustomDataRestConfig implements RepositoryRestConfigurer {
     private void disableHttpRequests(Class<Record> recordsClass, RepositoryRestConfiguration config, HttpMethod[] unsupportedRequests) {
 
         config.getExposureConfiguration()
-                .forDomainType(Record.class)
+                .forDomainType(recordsClass)
                 .withItemExposure((metadata, httpMethods) ->
                         httpMethods.disable(unsupportedRequests))
                 .withCollectionExposure((metadata, httpMethods) ->
