@@ -18,7 +18,7 @@ const ReturnRecord: React.FC<{ record: RecordModel}> = (props) => {
         <h6 className="mt-2">{props.record.title}</h6>
         <p>{props.record.artist}</p>
         <a className="btn main-color text-white" href="#">
-          Reserve!
+          Buy!
         </a>
       </div>
     </div>
