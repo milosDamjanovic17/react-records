@@ -9,8 +9,8 @@ export function App() {
   return (
     <>
       <Navbar />
-        <HomePage />
-        {/* <SearchBooksPage /> */}
+        {/* <HomePage /> */}
+        <SearchBooksPage />
       <Footer />
     </>
   );
