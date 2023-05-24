@@ -11,4 +11,5 @@ public interface RecordsRepository extends JpaRepository<Record, Long> {
 
     Page<Record> findByTitleContaining(@RequestParam("title") String title, Pageable pageable);
 
+    Page<Record> findByGenre(@RequestParam("genre") String genre, Pageable pageable);
 }

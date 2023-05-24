@@ -17,6 +17,8 @@ const SearchBooksPage = () => {
   const [search, setSearch] = useState("");
   const [searchUrl, setSearchUrl] = useState("");
 
+  const [genreView, setGenreView] = useState('Record genre');
+
   useEffect(() => {
     async function fetchRecords() {
       const baseUrl: string = "http://localhost:8080/api/records";
@@ -25,7 +27,8 @@ const SearchBooksPage = () => {
       if (searchUrl === "") {
         renderUrl = `${baseUrl}?page=${currentPage - 1}&size=${recordsPerPage}`;
       } else {
-        renderUrl = baseUrl + searchUrl;
+         let searchWithPage = searchUrl.replace('<pageNumber>', `${currentPage - 1}`)
+        renderUrl = baseUrl + searchWithPage;
       }
 
       const response = await fetch(renderUrl);
@@ -79,14 +82,34 @@ const SearchBooksPage = () => {
   }
 
   const searchHandleChange = () => {
+    setCurrentPage(1);
+
     if (search === "") {
       setSearchUrl("");
     } else {
       setSearchUrl(
-        `/search/findByTitleContaining?title=${search}&page=0&size=${recordsPerPage}`
+        `/search/findByTitleContaining?title=${search}&page=<pageNumber>&size=${recordsPerPage}`
       );
     }
+    setGenreView('Record genre');
   };
+
+  const genreField = (value: string) => {
+   setCurrentPage(1);
+      if(
+         value.toLowerCase() === 'house' ||
+         value.toLowerCase() === 'trance' ||
+         value.toLowerCase() === 'hiphop/rap' ||
+         value.toLowerCase() === 'dnb'
+         ){
+            setGenreView(value);
+            setSearchUrl(`/search/findByGenre?genre=${value}&page=<pageNumber>&size=${recordsPerPage}`)
+         
+         }else{
+         setGenreView('All');
+         setSearchUrl(`?page=<pageNumber>&size=${recordsPerPage}`)
+         }   
+  }
 
   const indexOfLastRecord: number = currentPage * recordsPerPage;
   const indexOfFirstBook: number = indexOfLastRecord - recordsPerPage;
@@ -128,35 +151,35 @@ const SearchBooksPage = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Category
+                Genre Filter
               </button>
               <ul
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton1"
               >
-                <li>
+                <li onClick={() => genreField('All')}>
                   <a href="#" className="dropdown-item">
                     All Genres
                   </a>
                 </li>
-                <li>
+                <li onClick={() => genreField('house')}>
                   <a href="#" className="dropdown-item">
                     House
                   </a>
                 </li>
-                <li>
+                <li onClick={() => genreField('trance')}>
                   <a href="#" className="dropdown-item">
                     Trance
                   </a>
                 </li>
-                <li>
+                <li onClick={() => genreField('hiphop/rap')}>
                   <a href="#" className="dropdown-item">
-                    HipHop/R&B
+                    HipHop/Rap
                   </a>
                 </li>
-                <li>
+                <li onClick={() => genreField('dnb')}>
                   <a href="#" className="dropdown-item">
-                    D&B
+                    DnB
                   </a>
                 </li>
               </ul>
