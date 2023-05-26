@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ExploreNewRecords = () => {
 
@@ -10,7 +11,7 @@ const ExploreNewRecords = () => {
             <div>
                <h1 className="display-5 fw-bold">Explore new records here!</h1>
                <p className="col-md-8 fs-4">What's next on your playlist?</p>
-               <a href="#" type="button" className="btn main-color btn-lg text-white">More records here</a>
+               <Link to="/search" type="button" className="btn main-color btn-lg text-white">More records here</Link>
             </div>
         </div>
       </div>

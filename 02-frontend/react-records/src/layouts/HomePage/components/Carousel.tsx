@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import ReturnRecord from "./ReturnRecord";
 import SpinnerLoading from "../../../Utils/SpinnerLoading";
 import RecordModel from "../../../models/Record";
+import { Link } from "react-router-dom";
 
 const Carousel = () => {
 
@@ -142,9 +143,9 @@ const Carousel = () => {
       </div>
       {/* View More btn */}
       <div className="homepage-carousel-title mt-3">
-        <a className="btn btn-outline-secondary btn-kg" href="#">
+        <Link className="btn btn-outline-secondary btn-kg" to="/search">
           View More
-        </a>
+        </Link>
       </div>
     </div>
    )
