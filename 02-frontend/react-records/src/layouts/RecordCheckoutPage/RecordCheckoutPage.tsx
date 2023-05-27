@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RecordModel from "../../models/Record";
 import SpinnerLoading from "../../Utils/SpinnerLoading";
+import StarsReview from "../../Utils/StarsReview";
 
 const RecordCheckoutPage = () => {
   const [record, setRecord] = useState<RecordModel>();
@@ -13,7 +14,7 @@ const RecordCheckoutPage = () => {
   useEffect(() => {
    async function fetchRecord() {
 
-      // expose selected recordId
+      // expose backend API selected recordId
       const baseUrl: string = `http://localhost:8080/api/records/${recordId}`;
 
       const response = await fetch(baseUrl);
@@ -24,8 +25,7 @@ const RecordCheckoutPage = () => {
 
       const responseJson = await response.json(); // convert response to json file
 
-
-      const loadedRecord: RecordModel= { // instance of RecordModel obj, bind model to responseJson
+      const loadedRecord: RecordModel= { // instance of RecordModel obj, bind model properties with responseJson
          id: responseJson.id,
          title: responseJson.title,
          artist: responseJson.artist,
@@ -77,6 +77,7 @@ const RecordCheckoutPage = () => {
                   <h2>{record?.title}</h2>
                   <h5 className="text-primary">{record?.artist}</h5>
                   <p className="lead">{record?.description}</p>
+                  <StarsReview rating={4.5} size={32} />
                </div>
             </div>
          </div>
@@ -95,6 +96,7 @@ const RecordCheckoutPage = () => {
                <h2>{record?.title}</h2>
                <h5 className="text-primary">{record?.artist}</h5>
                <p className="lead">{record?.description}</p>
+               <StarsReview rating={4.5} size={32} />
             </div>
          </div>
             <hr/>
