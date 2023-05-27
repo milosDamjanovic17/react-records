@@ -3,7 +3,7 @@ import './App.css';
 import Navbar from './layouts/NavbarAndFooter/Navbar';
 import Footer from './layouts/NavbarAndFooter/Footer';
 import HomePage from './layouts/HomePage/HomePage';
-import SearchBooksPage from './layouts/SearchBooks/SearchRecordsPage';
+import SearchRecordsPage from './layouts/SearchRecords/SearchRecordsPage';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import RecordCheckoutPage from './layouts/RecordCheckoutPage/RecordCheckoutPage';
 
@@ -20,7 +20,7 @@ export function App() {
           <HomePage />
         </Route>
         <Route path='/search'>
-          <SearchBooksPage />
+          <SearchRecordsPage />
         </Route>
         <Route path='/checkout/:recordId'>
           <RecordCheckoutPage />
