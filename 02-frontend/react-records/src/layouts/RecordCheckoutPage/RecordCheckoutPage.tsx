@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import RecordModel from "../../models/Record";
 import SpinnerLoading from "../../Utils/SpinnerLoading";
 import StarsReview from "../../Utils/StarsReview";
+import CheckoutAndReviewBox from "./CheckoutAndReviewBox";
 
 const RecordCheckoutPage = () => {
   const [record, setRecord] = useState<RecordModel>();
@@ -80,6 +81,7 @@ const RecordCheckoutPage = () => {
                   <StarsReview rating={4.5} size={32} />
                </div>
             </div>
+            <CheckoutAndReviewBox record = {record} mobile={false} />
          </div>
          <hr/>
       </div>
@@ -99,6 +101,7 @@ const RecordCheckoutPage = () => {
                <StarsReview rating={4.5} size={32} />
             </div>
          </div>
+         <CheckoutAndReviewBox record = {record} mobile={true} />
             <hr/>
       </div>
     </div>
