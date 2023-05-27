@@ -63,7 +63,42 @@ const RecordCheckoutPage = () => {
 
   return (
     <div>
-      <h3>Component works!</h3>
+      <div className="container d-none d-lg-block">
+         <div className="row mt-5">
+            <div className="col-sm-2 col-md-2">
+               {record?.img ?
+                  <img src={record.img} width='290' height='310' alt="Record" />
+                     :
+                  <img src={require('../../Images/RecordsImages/default-vinyl.jpg')} width='290' height='310' alt="Record"/>   
+               }  
+            </div>
+            <div className="col-4 col-md-4 container">
+               <div className="ml-2">
+                  <h2>{record?.title}</h2>
+                  <h5 className="text-primary">{record?.artist}</h5>
+                  <p className="lead">{record?.description}</p>
+               </div>
+            </div>
+         </div>
+         <hr/>
+      </div>
+      <div className="container d-lg-none mt-5"> {/* Mobile view container */}
+         <div className="d-flex justify-content-center align-items-center">
+               {record?.img ?
+                  <img src={record.img} width='280' height='300' alt="Record" />
+                     :
+                  <img src={require('../../Images/RecordsImages/default-vinyl.jpg')} width='280' height='300' alt="Record"/>   
+               }  
+         </div>
+         <div className="mt-4">
+            <div className="ml-2">
+               <h2>{record?.title}</h2>
+               <h5 className="text-primary">{record?.artist}</h5>
+               <p className="lead">{record?.description}</p>
+            </div>
+         </div>
+            <hr/>
+      </div>
     </div>
   );
 };
