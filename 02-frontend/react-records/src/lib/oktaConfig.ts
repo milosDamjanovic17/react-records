@@ -6,5 +6,4 @@ const oktaConfig = {
    pkce: true,
    disableHttpsCheck: true
 }
-
-export default oktaConfig
+export default oktaConfig;
