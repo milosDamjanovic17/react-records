@@ -5,6 +5,7 @@ import StarsReview from "../../Utils/StarsReview";
 import CheckoutAndReviewBox from "./CheckoutAndReviewBox";
 import ReviewModel from "../../models/ReviewModel";
 import { error } from "console";
+import LatestReviews from "./LatestReviews";
 
 const RecordCheckoutPage = () => {
   const [record, setRecord] = useState<RecordModel>();
@@ -135,12 +136,13 @@ const RecordCheckoutPage = () => {
                   <h2>{record?.title}</h2>
                   <h5 className="text-primary">{record?.artist}</h5>
                   <p className="lead">{record?.description}</p>
-                  <StarsReview rating={4.5} size={32} />
+                  <StarsReview rating={totalStars} size={32} />
                </div>
             </div>
             <CheckoutAndReviewBox record = {record} mobile={false} />
          </div>
          <hr/>
+         <LatestReviews reviews={reviews} recordId={record?.id} mobile = {false}/>
       </div>
       <div className="container d-lg-none mt-5"> {/* Mobile view container */}
          <div className="d-flex justify-content-center align-items-center">
@@ -155,11 +157,12 @@ const RecordCheckoutPage = () => {
                <h2>{record?.title}</h2>
                <h5 className="text-primary">{record?.artist}</h5>
                <p className="lead">{record?.description}</p>
-               <StarsReview rating={4.5} size={32} />
+               <StarsReview rating={totalStars} size={32} />
             </div>
          </div>
          <CheckoutAndReviewBox record = {record} mobile={true} />
             <hr/>
+            <LatestReviews reviews={reviews} recordId={record?.id} mobile = {true}/>
       </div>
     </div>
   );
