@@ -5,6 +5,7 @@ import Footer from './layouts/NavbarAndFooter/Footer';
 import HomePage from './layouts/HomePage/HomePage';
 import SearchBooksPage from './layouts/SearchBooks/SearchRecordsPage';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import RecordCheckoutPage from './layouts/RecordCheckoutPage/RecordCheckoutPage';
 
 export function App() {
   return (
@@ -20,6 +21,9 @@ export function App() {
         </Route>
         <Route path='/search'>
           <SearchBooksPage />
+        </Route>
+        <Route path='/checkout/:recordId'>
+          <RecordCheckoutPage />
         </Route>
         </Switch>
       </div>
