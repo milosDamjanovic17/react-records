@@ -1,6 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useOktaAuth } from "@okta/okta-react";
 
 const Heros = () => {
+  const { authState } = useOktaAuth();
+
+  const authCheck = () => {
+    return (
+      authState?.isAuthenticated ? 
+      (
+        <Link type="button" className="btn main-color btn-lg text-white" to="/search">
+          Explore our records collection
+        </Link>
+      ) 
+        : 
+      (
+        <Link className="btn main-color btn-lg text-white" to="/login">
+          Sign up
+        </Link>
+      )
+    )
+  };
+
   return (
     <div>
       <div className="d-none d-lg-block">
@@ -12,11 +33,11 @@ const Heros = () => {
             <div className="ml-2">
               <h1>What have you been listening recently?</h1>
               <p className="lead">
-               Our records store has plenty of records just for you. Whether you are searching for your oldschool hit vinyl or a fresh new record.
+                Our records store has plenty of records just for you. Whether
+                you are searching for your oldschool hit vinyl or a fresh new
+                record.
               </p>
-              <a className="btn main-color btn-lg text-white" href="#">
-                Sign up
-              </a>
+              {authCheck()}
             </div>
           </div>
         </div>
@@ -44,11 +65,11 @@ const Heros = () => {
             <div className="mt-2">
               <h1>What have you been listening recently?</h1>
               <p className="lead">
-               Our records store has plenty of records just for you. Whether you are searching for your oldschool hit vinyl or a fresh new record.
+                Our records store has plenty of records just for you. Whether
+                you are searching for your oldschool hit vinyl or a fresh new
+                record.
               </p>
-              <a className="btn main-color btn-lg text-white" href="#">
-                Sign up
-              </a>
+              {authCheck()}
             </div>
           </div>
           <div className="m-2">
@@ -56,7 +77,7 @@ const Heros = () => {
             <div className="mt-2">
               <h1>Our collection is always changing!</h1>
               <p className="lead">
-               Try to check in daily as our collection is always changing! We
+                Try to check in daily as our collection is always changing! We
                 work nonstop to provide the most accurate record vinyl selection
                 possible for our comunnity.
               </p>

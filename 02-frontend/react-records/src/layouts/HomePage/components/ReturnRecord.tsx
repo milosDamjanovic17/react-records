@@ -1,5 +1,6 @@
 import React from "react";
 import RecordModel from "../../../models/Record";
+import { Link } from "react-router-dom";
 
 const ReturnRecord: React.FC<{ record: RecordModel}> = (props) => {
   return (
@@ -17,9 +18,9 @@ const ReturnRecord: React.FC<{ record: RecordModel}> = (props) => {
         )}
         <h6 className="mt-2">{props.record.title}</h6>
         <p>{props.record.artist}</p>
-        <a className="btn main-color text-white" href="#">
+        <Link className="btn main-color text-white" to={`checkout/${props.record.id}`}>
           Order here
-        </a>
+        </Link>
       </div>
     </div>
   );
