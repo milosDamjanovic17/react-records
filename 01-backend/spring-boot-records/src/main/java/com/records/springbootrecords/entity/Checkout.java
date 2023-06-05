@@ -1,8 +1,9 @@
 package com.records.springbootrecords.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Check;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "checkout")
