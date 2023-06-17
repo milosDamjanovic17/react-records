@@ -68,7 +68,7 @@ const RecordCheckoutPage = () => {
       setIsLoading(false);
       setHttpError(error.message);
     });
-  }, []);
+  }, [isCheckedOut]);
 
   // useEffect for fetching Reviews
   useEffect(() => {
@@ -145,7 +145,7 @@ const RecordCheckoutPage = () => {
          setIsLoadingCurrentLoansCount(false);
          setHttpError(error.message);
       })
-  },[authState])
+  },[authState, isCheckedOut])
 
   // useEffect for is record isCheckedOut
   useEffect(() => {
@@ -193,6 +193,23 @@ const RecordCheckoutPage = () => {
    )
   }
 
+  async function checkoutRecord() {
+   const url = `http://localhost:8080/api/records/secure/checkout/?recordId=${recordId}`;
+   const requestOptions = {
+
+      method: 'PUT',
+      headers: {
+         Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+         'Content-Type': 'application/json',
+      }
+   }
+   const checkoutResponse = await fetch(url, requestOptions);
+   if (!checkoutResponse.ok){
+      throw new Error('Something went wrong')
+   }
+   setIsCheckedOut(true);
+  }
+
   return (
     <div>
       <div className="container d-none d-lg-block">
@@ -212,7 +229,7 @@ const RecordCheckoutPage = () => {
                   <StarsReview rating={totalStars} size={32} />
                </div>
             </div>
-            <CheckoutAndReviewBox record = {record} mobile={false} currentLoansCount={currentLoansCount}/>
+            <CheckoutAndReviewBox record = {record} mobile={false} currentLoansCount={currentLoansCount} isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut} checkoutRecord={checkoutRecord}/>
          </div>
          <hr/>
          <LatestReviews reviews={reviews} recordId={record?.id} mobile = {false}/>
@@ -233,7 +250,7 @@ const RecordCheckoutPage = () => {
                <StarsReview rating={totalStars} size={32} />
             </div>
          </div>
-         <CheckoutAndReviewBox record = {record} mobile={true} currentLoansCount={currentLoansCount}/>
+         <CheckoutAndReviewBox record = {record} mobile={true} currentLoansCount={currentLoansCount} isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut} checkoutRecord={checkoutRecord}/>
             <hr/>
             <LatestReviews reviews={reviews} recordId={record?.id} mobile = {true}/>
       </div>

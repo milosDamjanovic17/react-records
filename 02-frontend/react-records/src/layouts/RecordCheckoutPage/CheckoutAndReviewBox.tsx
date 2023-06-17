@@ -1,8 +1,23 @@
 import { Link } from "react-router-dom";
 import RecordModel from "../../models/Record";
 
-const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: boolean, currentLoansCount: number}> = (props) => {
+const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: boolean, 
+   currentLoansCount: number, isAuthenticated: any, isCheckedOut: boolean, checkoutRecord: any}> = (props) => {
 
+
+   function buttonRender(){
+
+      if(props.isAuthenticated){
+         if(!props.isCheckedOut && props.currentLoansCount < 5){
+            return (<button onClick={() => props.checkoutRecord()} className="btn btn-success btn-lg">Checkout</button>)
+         } else if(props.isCheckedOut){
+            return (<p><b>Record checked out. Enjoy listening!</b></p>)
+         } else if(!props.isCheckedOut){
+            return (<p className="text-danger">You already have 5 vinyls checked out!</p>)
+         }
+      }
+      return (<Link to={'/login'} className="btn btn-success btn-lg">Sign In</Link>)
+   }
 
    return(
       <div className={props.mobile ? 'card d-flex mt-5' : 'card col-3 container d-flex mb-5'}>
@@ -33,7 +48,7 @@ const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: b
                   </p>
                </div>
             </div>
-            <Link to='/#' className="btn btn-success btn-large">Sign In</Link>
+            {buttonRender()}
             <hr/>
             <p className="mt-3">
                This number can change until placing order has been complete
