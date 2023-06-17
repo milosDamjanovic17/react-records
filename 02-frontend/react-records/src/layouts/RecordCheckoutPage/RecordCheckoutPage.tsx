@@ -6,8 +6,12 @@ import CheckoutAndReviewBox from "./CheckoutAndReviewBox";
 import ReviewModel from "../../models/ReviewModel";
 import { error } from "console";
 import LatestReviews from "./LatestReviews";
+import { useOktaAuth } from "@okta/okta-react";
 
 const RecordCheckoutPage = () => {
+
+   const {authState} = useOktaAuth();
+
   const [record, setRecord] = useState<RecordModel>();
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState(null);
@@ -16,6 +20,10 @@ const RecordCheckoutPage = () => {
   const [reviews, setReviews] = useState<ReviewModel[]>([]);
   const [totalStars, setTotalStars] = useState(0);
   const [isLoadingReview, setIsLoadingReview] = useState(true);
+
+  // loans count state
+  const[currentLoansCount, setCurrentLoansCount] = useState(0);
+  const[isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] = useState(true);
 
 
   //expose record id
@@ -105,9 +113,39 @@ const RecordCheckoutPage = () => {
    })
   },[])
 
+  // useEffect for loans count
+  useEffect(() => {
+
+      const fetchUserCurrentLoansCount = async () => {
+
+         if(authState && authState.isAuthenticated){
+            const url = `http://localhost:8080/api/records/secure/currentcheckout/count`;
+            const requestOptions = {
+               method: 'GET',
+               headers: {
+                  Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+                  'Content-Type': 'application/json'
+               }
+            };
+            const currentLoansCountResponse = await fetch(url, requestOptions);
+            if(!currentLoansCountResponse.ok){
+               throw new Error('Something went wrong');
+            }
+            const currentLoansCountResponseJson = await currentLoansCountResponse.json();
+            setCurrentLoansCount(currentLoansCountResponseJson);
+         }
+
+         setIsLoadingCurrentLoansCount(false);
+      }
+      fetchUserCurrentLoansCount().catch((error:any) => {
+         setIsLoadingCurrentLoansCount(false);
+         setHttpError(error.message);
+      })
+  },[authState])
+
 
   // load spinner component
-  if(isLoading || isLoadingReview){
+  if(isLoading || isLoadingReview || isLoadingCurrentLoansCount){
    return <SpinnerLoading />
   }
 
@@ -126,7 +164,7 @@ const RecordCheckoutPage = () => {
          <div className="row mt-5">
             <div className="col-sm-2 col-md-2">
                {record?.img ?
-                  <img src={record.img} width='290' height='310' alt="Record" />
+                  <img src={record.img} width='250' height='310' alt="Record" />
                      :
                   <img src={require('../../Images/RecordsImages/default-vinyl.jpg')} width='290' height='310' alt="Record"/>   
                }  
@@ -139,7 +177,7 @@ const RecordCheckoutPage = () => {
                   <StarsReview rating={totalStars} size={32} />
                </div>
             </div>
-            <CheckoutAndReviewBox record = {record} mobile={false} />
+            <CheckoutAndReviewBox record = {record} mobile={false} currentLoansCount={currentLoansCount}/>
          </div>
          <hr/>
          <LatestReviews reviews={reviews} recordId={record?.id} mobile = {false}/>
@@ -160,7 +198,7 @@ const RecordCheckoutPage = () => {
                <StarsReview rating={totalStars} size={32} />
             </div>
          </div>
-         <CheckoutAndReviewBox record = {record} mobile={true} />
+         <CheckoutAndReviewBox record = {record} mobile={true} currentLoansCount={currentLoansCount}/>
             <hr/>
             <LatestReviews reviews={reviews} recordId={record?.id} mobile = {true}/>
       </div>

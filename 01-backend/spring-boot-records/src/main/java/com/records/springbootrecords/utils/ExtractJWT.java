@@ -10,12 +10,12 @@ public class ExtractJWT {
 
         token.replace("Bearer ", "");
 
-        String[] chunks = token.split("\\.");
+        String[] chunks = token.split("\\."); // since the token header, payload and signature are divided by '.' we'll split the token into 3 String[] chunks => [0] header, [1] payload, [2] signature
         Base64.Decoder decoder = Base64.getUrlDecoder();
 
         String payload = new String(decoder.decode(chunks[1])); // extract payload
 
-        String [] entries = payload.split(",");
+        String[] entries = payload.split(","); // complete payload is a JSON object, divide each parameter by comma
 
         Map<String, String> map = new HashMap<>();
 

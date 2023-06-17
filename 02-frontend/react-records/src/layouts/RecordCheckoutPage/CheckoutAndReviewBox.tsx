@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import RecordModel from "../../models/Record";
 
-const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: boolean}> = (props) => {
+const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: boolean, currentLoansCount: number}> = (props) => {
 
 
    return(
@@ -9,7 +9,7 @@ const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: b
          <div className="card-body container">
             <div className="mt-3">
                <p>
-                  <b>0/5 </b>
+                  <b>{props.currentLoansCount}/5 </b>
                   records checked out
                </p>
                <hr/>

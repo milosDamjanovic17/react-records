@@ -17,7 +17,7 @@ public class SecurityConfiguration {
         // Cross site Request Forgery
         http.csrf().disable();
 
-        // Protect endpoints at /api/<type>/secure
+        // Protect endpoints at /api/<type>/secure, in our case => /api/records/secure
         http.authorizeRequests(configurer ->
                 configurer
                         .antMatchers("/api/records/secure/**")
@@ -35,7 +35,7 @@ public class SecurityConfiguration {
         Okta.configureResourceServer401ResponseBody(http);
 
 
-        return http.build(); // build design patters
+        return http.build(); // build design patterns
     }
 
 }
