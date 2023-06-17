@@ -25,6 +25,10 @@ const RecordCheckoutPage = () => {
   const[currentLoansCount, setCurrentLoansCount] = useState(0);
   const[isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] = useState(true);
 
+  // is record checked out already?
+  const[isCheckedOut, setIsCheckedOut] = useState(false);
+  const [isLoadingRecordCheckedOut, setIsLoadingRecordCheckedOut] = useState(true)
+
 
   //expose record id
   const recordId = window.location.pathname.split("/")[2]; //recordsapp.com/checkout/**id**
@@ -143,9 +147,40 @@ const RecordCheckoutPage = () => {
       })
   },[authState])
 
+  // useEffect for is record isCheckedOut
+  useEffect(() => {
+   const fetchUserCheckedOutRecord = async () => {
+
+      if(authState && authState.isAuthenticated){
+         const url = `http://localhost:8080/api/records/secure/ischeckedout/byuser?recordId=${recordId}`;
+         const requestOptions = {
+            method: 'GET',
+            headers: {
+               Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+               'Content-Type': 'application/json'
+            }
+         };
+         const recordCheckedOut = await fetch(url, requestOptions);
+
+         if(!recordCheckedOut.ok){
+            throw new Error('Something went wrong!');
+         }
+
+         const recordCheckedOutResponseJson = await recordCheckedOut.json();
+
+         setIsCheckedOut(recordCheckedOutResponseJson);
+      }
+      setIsLoadingRecordCheckedOut(false);
+   }
+
+   fetchUserCheckedOutRecord().catch((error:any) => {
+      setIsLoadingRecordCheckedOut(false);
+      setHttpError(error.message)
+   })
+  }, [authState])
 
   // load spinner component
-  if(isLoading || isLoadingReview || isLoadingCurrentLoansCount){
+  if(isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingRecordCheckedOut){
    return <SpinnerLoading />
   }
 
