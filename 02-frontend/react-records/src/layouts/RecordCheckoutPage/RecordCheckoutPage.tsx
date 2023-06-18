@@ -243,6 +243,8 @@ const RecordCheckoutPage = () => {
    setIsCheckedOut(true);
   }
 
+  
+
   return (
     <div>
       <div className="container d-none d-lg-block">
