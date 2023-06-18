@@ -6,8 +6,8 @@ class ReviewRequestModel{
 
 
    constructor(rating: number, recordId: number, reviewDescription: string){
-      this.rating = rating,
-      this.recordId = recordId,
+      this.rating = rating;
+      this.recordId = recordId;
       this.reviewDescription = reviewDescription
    }
 
