@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import RecordModel from "../../models/Record";
+import LeaveAReview from "../../Utils/LeaveAReview";
 
 const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: boolean, 
    currentLoansCount: number, isAuthenticated: any, 
@@ -23,7 +24,8 @@ const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: b
 
    function reviewRender(){
       if(props.isAuthenticated && !props.isReviewLeft){
-         return(<p>Leave a review component here</p>)
+         
+         return(<LeaveAReview></LeaveAReview>)
       }else if(props.isAuthenticated && props.isReviewLeft){
          return(<p><b>Thanks for your review!</b></p>)
       }
