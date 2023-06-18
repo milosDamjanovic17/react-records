@@ -13,7 +13,7 @@ const LeaveAReview: React.FC<{}> = (props) => {
 
       <div className='dropdown' style={{cursor: 'pointer'}}>
          <h5 className='dropdown-toggle' id='dropdownMenuButton1' data-bs-toggle='dropdown'>
-            Leave review here.
+            Leave a review here.
          </h5>
          <ul id='subimtReviewRating' className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
             <li><button onClick={() => starValue(0)} className='dropdown-item'>0 star</button></li>
