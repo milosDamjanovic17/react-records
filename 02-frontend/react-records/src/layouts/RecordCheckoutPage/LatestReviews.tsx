@@ -19,7 +19,7 @@ const LatestReviews: React.FC<{
                   ))}
 
                   <div className="m-3">
-                     <Link type="button" className="btn main-color btn-md text-white" to='/#'>
+                     <Link type="button" className="btn main-color btn-md text-white" to={`/reviewlist/${props.recordId}`}>
                         See all reviews
                      </Link>
                   </div>
