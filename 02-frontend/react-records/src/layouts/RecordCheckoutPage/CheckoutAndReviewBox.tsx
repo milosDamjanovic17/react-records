@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import RecordModel from "../../models/Record";
 
 const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: boolean, 
-   currentLoansCount: number, isAuthenticated: any, isCheckedOut: boolean, checkoutRecord: any}> = (props) => {
+   currentLoansCount: number, isAuthenticated: any, 
+   isCheckedOut: boolean, checkoutRecord: any
+   isReviewLeft: boolean}> = (props) => {
 
 
    function buttonRender(){
@@ -17,6 +19,15 @@ const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: b
          }
       }
       return (<Link to={'/login'} className="btn btn-success btn-lg">Sign In</Link>)
+   }
+
+   function reviewRender(){
+      if(props.isAuthenticated && !props.isReviewLeft){
+         return(<p>Leave a review component here</p>)
+      }else if(props.isAuthenticated && props.isReviewLeft){
+         return(<p><b>Thanks for your review!</b></p>)
+      }
+      return (<div><hr><p>Sign in to leave a review!</p></hr></div>)
    }
 
    return(
@@ -53,9 +64,7 @@ const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: b
             <p className="mt-3">
                This number can change until placing order has been complete
             </p>
-            <p>
-               Sign in to be able to leave a review and rating.
-            </p>
+            {reviewRender()}
          </div>
       </div>
    )
