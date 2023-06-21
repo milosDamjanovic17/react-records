@@ -1,10 +1,14 @@
 package com.records.springbootrecords.controller;
 
 import com.records.springbootrecords.entity.Record;
+import com.records.springbootrecords.responsemodels.ShelfCurrentLoansResponse;
 import com.records.springbootrecords.service.RecordService;
 import com.records.springbootrecords.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.mediatype.alps.Ext;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
@@ -16,6 +20,13 @@ public class RecordsController {
     @Autowired
     public RecordsController(RecordService recordService){
         this.recordService = recordService;
+    }
+
+    @GetMapping("/secure/currentloans")
+    public List<ShelfCurrentLoansResponse> currentLoans(@RequestHeader(value = "Authorization") String token) throws Exception{
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+
+        return recordService.currentLoans(userEmail);
     }
 
     @GetMapping("/secure/currentcheckout/count")

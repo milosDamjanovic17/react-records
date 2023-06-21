@@ -5,12 +5,18 @@ import com.records.springbootrecords.dao.CheckoutRepository;
 import com.records.springbootrecords.dao.RecordsRepository;
 import com.records.springbootrecords.entity.Checkout;
 import com.records.springbootrecords.entity.Record;
+import com.records.springbootrecords.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -64,6 +70,41 @@ public class RecordService {
     public int currentCheckoutCount(String userEmail){
 
         return checkoutRepository.findRecordsByUserEmail(userEmail).size();
+    }
+
+    public List<ShelfCurrentLoansResponse> currentLoans (String userEmail) throws Exception{
+
+        List<ShelfCurrentLoansResponse> shelfCurrentLoansResponse = new ArrayList<>();
+
+        List<Checkout> checkoutList = checkoutRepository.findRecordsByUserEmail(userEmail); // => gather all records that user already checkedout, it will return only recordId's
+
+        List<Long> recordIdList = new ArrayList<>();
+
+        for(Checkout c: checkoutList) {
+            recordIdList.add(c.getRecordId());
+        }
+
+        List<Record> records = recordsRepository.findRecordsByRecordId(recordIdList);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        for(Record record: records){
+            Optional<Checkout> checkout = checkoutList.stream()
+                    .filter(x -> x.getRecordId() == record.getId()).findFirst(); // find first record that matches the record id that we checked out
+
+            if(checkout.isPresent()){
+                Date d1 = sdf.parse(checkout.get().getCheckoutDate());
+                Date d2 = sdf.parse(LocalDate.now().toString());
+
+                TimeUnit time = TimeUnit.DAYS;
+
+                long difference_in_time = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
+
+                shelfCurrentLoansResponse.add(new ShelfCurrentLoansResponse(record, (int) difference_in_time));
+            }
+        }
+
+        return shelfCurrentLoansResponse;
     }
 }
 
