@@ -60,7 +60,7 @@ public class RecordsController {
         recordService.returnRecord(userEmail, recordId);
     }
 
-    @PutMapping("secure/renew/loan")
+    @PutMapping("/secure/renew/loan")
     public void renewLoan(@RequestHeader(value = "Authorization") String token,
                           @RequestParam Long recordId) throws Exception{
 

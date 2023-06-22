@@ -77,6 +77,24 @@ const Loans = () => {
       setCheckout(!checkout)
    }
 
+   async function renewLoan(recordId: number) {
+      const url = `http://localhost:8080/api/records/secure/renew/loan/?recordId=${recordId}`;
+      const requestOptions = {
+         method: 'PUT',
+         headers: {
+            Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+            'Content-Type': 'application/json'
+         }
+      };
+
+      const returnResponse = await fetch(url, requestOptions);
+
+      if(!returnResponse.ok){
+         throw new Error('Something went wrong!')
+      }
+      setCheckout(!checkout);
+   }
+
    return(
       <div>
          {/**DESKTOP */}
@@ -134,7 +152,7 @@ const Loans = () => {
                            </div>
                         </div>
                         <hr/>
-                        <LoansModal shelfCurrentLoans={s} mobile={false} returnRecord={returnRecord}/>
+                        <LoansModal shelfCurrentLoans={s} mobile={false} returnRecord={returnRecord} renewLoan={renewLoan}/>
                      </div>
                   ))}
                </> :
@@ -203,7 +221,7 @@ const Loans = () => {
                               </div>
                            </div>
                         <hr/>
-                        <LoansModal shelfCurrentLoans={s} mobile={true} returnRecord={returnRecord}/>
+                        <LoansModal shelfCurrentLoans={s} mobile={true} returnRecord={returnRecord} renewLoan={renewLoan}/>
                      </div>
                   ))}
                </> :
