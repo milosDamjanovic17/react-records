@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ShelfCurrentLoans from "../../../models/ShelfCurrentLoans";
 import SpinnerLoading from "../../../Utils/SpinnerLoading";
+import LoansModal from "./LoansModal";
 
 const Loans = () => {
 
@@ -13,6 +14,9 @@ const Loans = () => {
    // Current loans states
    const [shelfCurrentLoans, setShelfCurrentLoans] = useState<ShelfCurrentLoans[]>([]);
    const [isLoadingUserLoans, setIsLoadingUserLoans] = useState(true);
+
+   // checkout state
+   const [checkout, setCheckout] = useState(false);
 
    // useEffect for fetching current record loans from logged user
    useEffect(() => {
@@ -48,13 +52,30 @@ const Loans = () => {
       })
 
       window.scrollTo(0, 0)
-   }, [authState]);
+   }, [authState, checkout]);
 
    if(isLoadingUserLoans){
       return (<SpinnerLoading />)
    }
 
-   if(httpError) { return (<div className="container m-5"> {httpError}</div>)}
+   if(httpError) { return (<div className="container m-5"> {httpError}</div>)};
+
+   async function returnRecord (recordId: number) {
+      const url = `http://localhost:8080/api/records/secure/return/?recordId=${recordId}`;
+      const requestOptions = {
+         method: 'PUT',
+         headers: {
+            Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+            'Content-Type': 'application/json'
+         }
+      };
+      const returnResponse = await fetch(url, requestOptions);
+
+      if(!returnResponse.ok){
+         throw new Error('Something went wrong Loans/returnRecord function')
+      }
+      setCheckout(!checkout)
+   }
 
    return(
       <div>
@@ -113,6 +134,7 @@ const Loans = () => {
                            </div>
                         </div>
                         <hr/>
+                        <LoansModal shelfCurrentLoans={s} mobile={false} returnRecord={returnRecord}/>
                      </div>
                   ))}
                </> :
@@ -163,7 +185,7 @@ const Loans = () => {
                                        </p>
                                     }
                                     <div className="list-group mt-3">
-                                       <button className="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal" data-bs-target={`#mobile-modal${s.record.id}`}>
+                                       <button className="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal" data-bs-target={`#mobilemodal${s.record.id}`}>
                                           Manage Loan
                                        </button>
                                        <Link to={'search'} className="list-group-item list-group-item-action">
@@ -181,6 +203,7 @@ const Loans = () => {
                               </div>
                            </div>
                         <hr/>
+                        <LoansModal shelfCurrentLoans={s} mobile={true} returnRecord={returnRecord}/>
                      </div>
                   ))}
                </> :

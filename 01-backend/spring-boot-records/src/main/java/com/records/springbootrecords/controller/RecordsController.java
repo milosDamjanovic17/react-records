@@ -51,4 +51,12 @@ public class RecordsController {
         return recordService.checkoutRecord(userEmail, recordId);
     }
 
+    @PutMapping("/secure/return")
+    public void returnRecord(@RequestHeader(value = "Authorization") String token,
+                             @RequestParam Long recordId) throws Exception{
+
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+
+        recordService.returnRecord(userEmail, recordId);
+    }
 }

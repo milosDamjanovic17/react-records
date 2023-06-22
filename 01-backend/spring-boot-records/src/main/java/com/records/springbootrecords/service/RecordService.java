@@ -106,6 +106,22 @@ public class RecordService {
 
         return shelfCurrentLoansResponse;
     }
+
+    public void returnRecord(String userEmail, Long recordId) throws Exception{
+
+        Optional<Record> record = recordsRepository.findById(recordId);
+
+        Checkout validateCheckout = checkoutRepository.findByUserEmailAndRecordId(userEmail, recordId);
+
+        if(!record.isPresent() || validateCheckout == null){
+            throw new Exception("Record doesn't exist or its not checked out by the user");
+        }
+
+        record.get().setCopiesAvailable(record.get().getCopiesAvailable() + 1);
+
+        recordsRepository.save(record.get());
+        checkoutRepository.deleteById(validateCheckout.getId());
+    }
 }
 
 
