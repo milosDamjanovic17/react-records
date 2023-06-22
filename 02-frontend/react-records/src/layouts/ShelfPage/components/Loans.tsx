@@ -129,6 +129,71 @@ const Loans = () => {
 
 
          {/**MOBILE */}
+         <div className="container d-lg-none mt-2">
+            {shelfCurrentLoans.length > 0 ?
+               <>
+               <h5 className="mb-3">Current loans: </h5>
+                  {shelfCurrentLoans.map(s => (
+                     <div key={s.record.id}>
+                           <div className="d-flex justify-content-center align-items-center">
+                              {
+                                 s.record?.img ?
+                                    <img src={s.record?.img} width="220" height="280" alt="Record" />
+                                    :
+                                    <img src={require('./../../../Images/RecordsImages/default-vinyl.jpg')} width="220" height="280" alt="Record"/>
+                              }
+                           </div>
+                           <div className="card d-flex mt-5 mb-3">
+                              <div className="card-body container">
+                                 <div className="mt-3">
+                                    <h4>Loan Options</h4>
+                                    {s.daysLeft > 0 &&
+                                       <p className="text-secondary">
+                                          Due in {s.daysLeft} days.
+                                       </p>
+                                    }
+                                    {s.daysLeft === 0 && 
+                                       <p className="text-success">
+                                          Due today!
+                                       </p>
+                                    }
+                                    {s.daysLeft < 0 &&
+                                       <p className="text-danger">
+                                          Past due by {s.daysLeft} days!
+                                       </p>
+                                    }
+                                    <div className="list-group mt-3">
+                                       <button className="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal" data-bs-target={`#mobile-modal${s.record.id}`}>
+                                          Manage Loan
+                                       </button>
+                                       <Link to={'search'} className="list-group-item list-group-item-action">
+                                          Search more records?
+                                       </Link>
+                                    </div>
+                                 </div>
+                                 <hr/>
+                                 <p className="mt-3">
+                                    Help others find their records by posting a review
+                                 </p>
+                                 <Link className="btn btn-primary" to={`checkout/${s.record.id}`}>
+                                    Leave a review
+                                 </Link>
+                              </div>
+                           </div>
+                        <hr/>
+                     </div>
+                  ))}
+               </> :
+               <>
+                  <h3 className="mt-3">
+                     Currently no loans
+                  </h3>
+                  <Link className="btn btn-primary" to={`search`}>
+                     Search your record here
+                  </Link>
+               </>
+            }
+         </div>
       </div>
    );
 }
