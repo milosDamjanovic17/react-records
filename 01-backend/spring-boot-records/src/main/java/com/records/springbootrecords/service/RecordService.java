@@ -2,8 +2,10 @@ package com.records.springbootrecords.service;
 
 
 import com.records.springbootrecords.dao.CheckoutRepository;
+import com.records.springbootrecords.dao.HistoryRepository;
 import com.records.springbootrecords.dao.RecordsRepository;
 import com.records.springbootrecords.entity.Checkout;
+import com.records.springbootrecords.entity.History;
 import com.records.springbootrecords.entity.Record;
 import com.records.springbootrecords.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,12 @@ public class RecordService {
     // inject repositories
     private RecordsRepository recordsRepository;
     private CheckoutRepository checkoutRepository;
+    private HistoryRepository historyRepository;
 
-    public RecordService(RecordsRepository recordsRepository, CheckoutRepository checkoutRepository){
+    public RecordService(RecordsRepository recordsRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository){
         this.recordsRepository = recordsRepository;
         this.checkoutRepository = checkoutRepository;
+        this.historyRepository = historyRepository;
     }
 
 
@@ -121,6 +125,19 @@ public class RecordService {
 
         recordsRepository.save(record.get());
         checkoutRepository.deleteById(validateCheckout.getId());
+
+        // save history object to DB
+        History history = new History(
+                userEmail,
+                validateCheckout.getCheckoutDate(),
+                LocalDate.now().toString(),
+                record.get().getTitle(),
+                record.get().getArtist(),
+                record.get().getDescription(),
+                record.get().getImg()
+        );
+
+        historyRepository.save(history);
     }
 
     public void renewLoan(String userEmail, Long recordId) throws Exception{
