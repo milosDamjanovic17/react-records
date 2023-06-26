@@ -10,7 +10,7 @@ const RecordsServices = () => {
     return (
       authState?.isAuthenticated ? 
       (
-        <Link type="button" className="btn main-color btn-lg px-4 me-md-2 fw-bold text-white" to="#">
+        <Link type="button" className="btn main-color btn-lg px-4 me-md-2 fw-bold text-white" to="/messages">
           Library Services
         </Link>
       ) 

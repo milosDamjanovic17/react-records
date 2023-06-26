@@ -26,9 +26,12 @@ const CheckoutAndReviewBox: React.FC<{record: RecordModel | undefined, mobile: b
       if(props.isAuthenticated && !props.isReviewLeft){
          
          return(<LeaveAReview submitReview={props.submitReview}></LeaveAReview>)
+      
       }else if(props.isAuthenticated && props.isReviewLeft){
+         
          return(<p><b>Thanks for your review!</b></p>)
       }
+      
       return (<div><hr><p>Sign in to leave a review!</p></hr></div>)
    }
 

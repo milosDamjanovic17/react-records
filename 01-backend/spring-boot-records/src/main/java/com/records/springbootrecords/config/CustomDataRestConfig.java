@@ -27,7 +27,7 @@ public class CustomDataRestConfig implements RepositoryRestConfigurer {
 
         config.exposeIdsFor(Record.class); // expose all Records.class id entities
         config.exposeIdsFor(Review.class); // expose all Review.class id entities
-        config.exposeIdsFor(Messages.class); // expose all Messages.class is entities
+        config.exposeIdsFor(Messages.class); // expose all Messages.class id entities
 
         disableHttpRequests(Record.class, config, unsupportedRequests);
         disableHttpRequests(Review.class, config, unsupportedRequests);
