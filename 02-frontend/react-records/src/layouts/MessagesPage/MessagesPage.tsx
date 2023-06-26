@@ -13,7 +13,7 @@ const MessagesPage = () => {
                      data-bs-target='#nav-send-message' type="button" role="tab" aria-controls='nav-send-message' aria-selected='true'>
                         Submit an Inquire
                   </button>
-                  <button onClick={() => setMessagesClick(true)} className="nav-link" id='nav-message-tab' data-bs-toggle='tab' data-bas-target='#nav-message'
+                  <button onClick={() => setMessagesClick(true)} className="nav-link" id='nav-message-tab' data-bs-toggle='tab' data-bs-target='#nav-message'
                      type="button" role='tab' aria-controls="nav-message" aria-selected='false'>
                         Q/A Response/Pending
                   </button>
