@@ -9,7 +9,7 @@ class MessagesModel {
    closed?: boolean;
 
 
-   constructor(id: number, userEmail: string, title: string, question: string, adminEmail: string, response: string, closed: boolean){
+   constructor(title: string, question: string){
 
       this.title = title;
       this.question = question;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PostNewMessage from "./components/PostNewMessage";
 
 const MessagesPage = () => {
 
@@ -22,7 +23,7 @@ const MessagesPage = () => {
             <div className="tab-content" id='nav-tabContent'>
                <div className="tab-pane fade show active" id='nav-send-message' role='tabpanel'
                   aria-labelledby="nav-send-message-tab">
-                     <p>Post new inquire</p>
+                     <PostNewMessage />
                </div>
                <div className="tab-pane fade" id='nav-message' role="tabpanel" aria-labelledby="nav-message-tab">
                   {messagesClick ? <p>Messages</p> : <></>}
