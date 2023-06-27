@@ -48,7 +48,7 @@ const Messages = () => {
 
       fetchUserMessages().catch((error : any) => {
          setIsLoadingMessages(false);
-         setHttpError(error.messages);
+         setHttpError(error.message);
       })
 
       window.scrollTo(0, 0);
