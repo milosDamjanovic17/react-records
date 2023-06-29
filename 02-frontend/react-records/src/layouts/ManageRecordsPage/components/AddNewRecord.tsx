@@ -1,5 +1,6 @@
 import { useOktaAuth } from "@okta/okta-react";
 import { useState, useEffect } from "react";
+import AddRecordRequest from "../../../models/AddRecordRequest";
 
 const AddNewRecord = () => {
 
@@ -11,7 +12,7 @@ const AddNewRecord = () => {
    const [description, setDescription] = useState('');
    const [copies, setCopies] = useState(0);
    const [genre, setGenre] = useState('Genre');
-   const [selectedImage, setSelectedImage] = useState('');
+   const [selectedImage, setSelectedImage] = useState<any>(null);
 
    // feedback success/failed msg
    const [displayWarning, setDisplayWarning] = useState(false);
@@ -19,6 +20,62 @@ const AddNewRecord = () => {
 
    function genreField(value: string) {
       setGenre(value);
+   }
+
+   async function base64ImgConversion(inputImg: any) {
+      if(inputImg.target.files[0]){
+         getBase64(inputImg.target.files[0]);
+      }
+   }
+
+   function getBase64(file: any){
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = function () {
+         setSelectedImage(reader.result);
+      };
+
+      reader.onerror = function (error){
+         console.log('Error', error);
+      }
+   }
+
+   async function submitNewRecord() {
+      const url = `http://localhost:8080/api/admin/secure/add/record`;
+      
+      if(authState?.isAuthenticated && title !== '' && artist !== '' && genre !== 'Genre' 
+            && description !== '' && copies >= 0){
+
+               const record: AddRecordRequest = new AddRecordRequest (title, artist, description, copies, genre);
+               record.img = selectedImage;
+
+               const requestOptions = {
+                  method: 'POST',
+                  headers: {
+                     Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                     'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(record)
+               };
+
+               const submitRecordResponse = await fetch (url, requestOptions);
+               if(!submitRecordResponse.ok){
+                  throw new Error('Something went wrong');
+               }
+
+               setTitle('');
+               setArtist('')
+               setDescription('');
+               setCopies(0);
+               setGenre('Genre');
+               setSelectedImage(null);
+               setDisplayWarning(false);
+               setDisplaySuccess(true)
+            }else{
+               setDisplayWarning(true);
+               setDisplaySuccess(false);
+            }
    }
 
    return(
@@ -55,11 +112,11 @@ const AddNewRecord = () => {
                               {genre}
                         </button>
                         <ul id='addNewRecordId' className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                           <li><a onClick={() => genreField('DnB')} className="dropdown-item"></a>D&B</li>
-                           <li><a onClick={() => genreField('HipHop/Rap')} className="dropdown-item"></a>HipHop/Rap</li>
-                           <li><a onClick={() => genreField('House')} className="dropdown-item"></a>House</li>
-                           <li><a onClick={() => genreField('Trance')} className="dropdown-item"></a>Trance</li>
-                           <li><a onClick={() => genreField('Other')} className="dropdown-item"></a>Other</li>
+                           <li><a onClick={() => genreField('DnB')} className="dropdown-item">D&B</a></li>
+                           <li><a onClick={() => genreField('HipHop/Rap')} className="dropdown-item">HipHop/Rap</a></li>
+                           <li><a onClick={() => genreField('House')} className="dropdown-item">House</a></li>
+                           <li><a onClick={() => genreField('Trance')} className="dropdown-item">Trance</a></li>
+                           <li><a onClick={() => genreField('Other')} className="dropdown-item">Other</a></li>
                         </ul>
                      </div>
                   </div>
@@ -71,9 +128,9 @@ const AddNewRecord = () => {
                      <label className="form-label">Copies</label>
                      <input type="number" className="form-control" name="Copies" required onChange={e => setCopies(Number(e.target.value))} value={copies}/>
                   </div>
-                  <input type='file'/>
+                  <input type='file'onChange={e => base64ImgConversion(e)}/>
                   <div>
-                     <button type="button" className="btn btn-primary mt-3">
+                     <button type="button" className="btn btn-primary mt-3" onClick={submitNewRecord}>
                         Add Record
                      </button>
                   </div>
