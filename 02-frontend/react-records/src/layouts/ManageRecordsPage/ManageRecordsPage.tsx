@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import AdminMessages from "./components/AdminMessages";
 import AddNewRecord from "./components/AddNewRecord";
+import ChangeQuantity from "./components/ChangeQuantity";
 
 
 const ManageRecordsPage = () => {
@@ -61,7 +62,7 @@ const ManageRecordsPage = () => {
                      <AddNewRecord />
                </div>
                <div className="tab-pane fade" id='nav-quantity' role="tabpanel" aria-labelledby="nav-quantity-tab">
-                  {changeQuantityOfRecordsClick ? <>Change quantity</> : <></>}
+                  {changeQuantityOfRecordsClick ? <ChangeQuantity /> : <></>}
                </div>
                <div className="tab-pane fade" id='nav-messages' role="tabpanel" aria-labelledby="nav-messages-tab">
                {messagesClick ? <AdminMessages /> : <></>}
