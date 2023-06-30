@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @Configuration //for making records carousel read-only, prevent the client from making updates to our entities
 public class CustomDataRestConfig implements RepositoryRestConfigurer {
 
-    private String sharedOriginURL = "http://localhost:3000";
+    private String sharedOriginURL = "https://localhost:3000";
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors){

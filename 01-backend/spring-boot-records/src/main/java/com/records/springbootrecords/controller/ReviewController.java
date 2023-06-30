@@ -8,7 +8,7 @@ import org.springframework.hateoas.mediatype.alps.Ext;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("https://localhost:3000")
 @RequestMapping("/api/reviews")
 public class ReviewController {
 
