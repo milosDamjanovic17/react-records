@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import RecordModel from "../../../models/Record";
+import { useOktaAuth } from "@okta/okta-react";
 
 const SearchRecord: React.FC<{ record: RecordModel }> = (props) => {
+
+  const {authState} = useOktaAuth();
   
   return (
     <div className="card mt-3 shadow p-3 mb-3 bg-body rounded">
@@ -50,10 +53,17 @@ const SearchRecord: React.FC<{ record: RecordModel }> = (props) => {
           </div>
         </div>
         <div className="col-md-4 d-flex justify-content-center align-items-center">
-          <Link to={`/checkout/${props.record.id}`} 
-            className="btn btn-md main-color text-white">
-            View Details
-          </Link>
+          {authState?.accessToken?.accessToken ? 
+            <Link to={`/checkout/${props.record.id}`} 
+              className="btn btn-md main-color text-white">
+              View Details
+            </Link>
+            :
+            <Link to={`/login`} 
+              className="btn btn-md main-color text-white">
+              Sign in to view details
+            </Link>
+          }
         </div>
       </div>
     </div>
