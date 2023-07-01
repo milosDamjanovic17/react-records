@@ -19,7 +19,7 @@ const ChangeQuantityRecord: React.FC<{ record: RecordModel, deleteRecord: any }>
 
    async function increaseQuantity() {
       
-      const url = `http://localhost:8080/api/admin/secure/increase/record/quantity/?recordId=${props.record?.id}`;
+      const url = `${process.env.REACT_APP_API}/admin/secure/increase/record/quantity/?recordId=${props.record?.id}`;
       const requestOptions = {
          method: 'PUT',
          headers: {
@@ -40,7 +40,7 @@ const ChangeQuantityRecord: React.FC<{ record: RecordModel, deleteRecord: any }>
 
    async function decreaseQuantity() {
 
-      const url = `http://localhost:8080/api/admin/secure/decrease/record/quantity/?recordId=${props.record?.id}`;
+      const url = `${process.env.REACT_APP_API}/admin/secure/decrease/record/quantity/?recordId=${props.record?.id}`;
       const requestOptions = {
          method: 'PUT',
          headers: {
@@ -61,7 +61,7 @@ const ChangeQuantityRecord: React.FC<{ record: RecordModel, deleteRecord: any }>
 
    async function deleteRecord(){
 
-      const url = `http://localhost:8080/api/admin/secure/delete/record/?recordId=${props.record?.id}`;
+      const url = `${process.env.REACT_APP_API}/admin/secure/delete/record/?recordId=${props.record?.id}`;
       const requestOptions = {
          method: 'DELETE',
          headers: {

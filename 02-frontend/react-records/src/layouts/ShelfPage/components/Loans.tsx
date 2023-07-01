@@ -24,7 +24,7 @@ const Loans = () => {
       const fecthUserCurrentLoans = async () => {
       
          if(authState && authState.isAuthenticated){
-            const url = `http://localhost:8080/api/records/secure/currentloans`;
+            const url = `${process.env.REACT_APP_API}/records/secure/currentloans`;
 
             const requestOptions = {
                method: 'GET',
@@ -61,7 +61,7 @@ const Loans = () => {
    if(httpError) { return (<div className="container m-5"> {httpError}</div>)};
 
    async function returnRecord (recordId: number) {
-      const url = `http://localhost:8080/api/records/secure/return/?recordId=${recordId}`;
+      const url = `${process.env.REACT_APP_API}/records/secure/return/?recordId=${recordId}`;
       const requestOptions = {
          method: 'PUT',
          headers: {
@@ -78,7 +78,7 @@ const Loans = () => {
    }
 
    async function renewLoan(recordId: number) {
-      const url = `http://localhost:8080/api/records/secure/renew/loan/?recordId=${recordId}`;
+      const url = `${process.env.REACT_APP_API}/records/secure/renew/loan/?recordId=${recordId}`;
       const requestOptions = {
          method: 'PUT',
          headers: {

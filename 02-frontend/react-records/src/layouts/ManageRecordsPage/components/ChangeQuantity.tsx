@@ -19,7 +19,7 @@ const ChangeQuantity = () => {
 
    useEffect(() => {
       async function fetchRecords() {
-        const baseUrl: string = `http://localhost:8080/api/records?page=${currentPage - 1}&size=${recordsPerPage}`;
+        const baseUrl: string = `${process.env.REACT_APP_API}/records?page=${currentPage - 1}&size=${recordsPerPage}`;
 
   
         const response = await fetch(baseUrl);

@@ -21,7 +21,7 @@ const SearchBooksPage = () => {
 
   useEffect(() => {
     async function fetchRecords() {
-      const baseUrl: string = "http://localhost:8080/api/records";
+      const baseUrl: string = `${process.env.REACT_APP_API}/records`;
 
       let renderUrl = "";
       if (searchUrl === "") {

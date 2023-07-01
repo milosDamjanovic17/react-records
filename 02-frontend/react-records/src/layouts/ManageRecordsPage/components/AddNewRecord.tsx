@@ -42,7 +42,7 @@ const AddNewRecord = () => {
    }
 
    async function submitNewRecord() {
-      const url = `http://localhost:8080/api/admin/secure/add/record`;
+      const url = `${process.env.REACT_APP_API}/admin/secure/add/record`;
       
       if(authState?.isAuthenticated && title !== '' && artist !== '' && genre !== 'Genre' 
             && description !== '' && copies >= 0){

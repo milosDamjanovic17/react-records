@@ -15,7 +15,7 @@ const Carousel = () => {
  
      async function fetchRecords() {
        // fetch data from backend API path, we want only 9 records to be shown in our Carousel
-       const baseUrl: string = 'http://localhost:8080/api/records';
+       const baseUrl: string = `${process.env.REACT_APP_API}/records`;
  
        const url: string = `${baseUrl}?page=0&size=9`;
  

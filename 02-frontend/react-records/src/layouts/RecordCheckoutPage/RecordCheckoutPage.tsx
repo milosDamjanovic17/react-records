@@ -41,7 +41,7 @@ const RecordCheckoutPage = () => {
    async function fetchRecord() {
 
       // expose backend API selected recordId
-      const baseUrl: string = `http://localhost:8080/api/records/${recordId}`;
+      const baseUrl: string = `${process.env.REACT_APP_API}/records/${recordId}`;
 
       const response = await fetch(baseUrl);
 
@@ -77,7 +77,7 @@ const RecordCheckoutPage = () => {
   useEffect(() => {
    async function fetchRecordReviews() {
       
-      const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByRecordId?recordId=${recordId}`;
+      const reviewUrl: string = `${process.env.REACT_APP_API}/reviews/search/findByRecordId?recordId=${recordId}`;
 
       const responseReviews = await fetch(reviewUrl);
 
@@ -125,7 +125,7 @@ const RecordCheckoutPage = () => {
    const fetchUserReviewRecord = async () => {
 
       if(authState && authState.isAuthenticated){
-         const url = `http://localhost:8080/api/reviews/secure/user/record/?recordId=${recordId}`;
+         const url = `${process.env.REACT_APP_API}/reviews/secure/user/record/?recordId=${recordId}`;
 
          const requestOptions = {
             method: 'GET',
@@ -157,7 +157,7 @@ const RecordCheckoutPage = () => {
       const fetchUserCurrentLoansCount = async () => {
 
          if(authState && authState.isAuthenticated){
-            const url = `http://localhost:8080/api/records/secure/currentcheckout/count`;
+            const url = `${process.env.REACT_APP_API}/records/secure/currentcheckout/count`;
             const requestOptions = {
                method: 'GET',
                headers: {
@@ -186,7 +186,7 @@ const RecordCheckoutPage = () => {
    const fetchUserCheckedOutRecord = async () => {
 
       if(authState && authState.isAuthenticated){
-         const url = `http://localhost:8080/api/records/secure/ischeckedout/byuser?recordId=${recordId}`;
+         const url = `${process.env.REACT_APP_API}/records/secure/ischeckedout/byuser?recordId=${recordId}`;
          const requestOptions = {
             method: 'GET',
             headers: {
@@ -228,7 +228,7 @@ const RecordCheckoutPage = () => {
   }
 
   async function checkoutRecord() {
-   const url = `http://localhost:8080/api/records/secure/checkout/?recordId=${recordId}`;
+   const url = `${process.env.REACT_APP_API}/records/secure/checkout/?recordId=${recordId}`;
    const requestOptions = {
 
       method: 'PUT',
@@ -254,7 +254,7 @@ const RecordCheckoutPage = () => {
 
    const reviewRequestModel = new ReviewRequestModel(starInput, recordId, reviewDescription);
 
-   const url = `http://localhost:8080/api/reviews/secure`;
+   const url = `${process.env.REACT_APP_API}/reviews/secure`;
    const requestOptions = {
       method: 'POST',
       headers: {

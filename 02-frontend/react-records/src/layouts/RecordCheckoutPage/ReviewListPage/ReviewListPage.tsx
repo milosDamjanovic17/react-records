@@ -22,7 +22,7 @@ const ReviewListPage = () => {
    useEffect(() => {
       async function fetchRecordReviews() {
          
-         const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByRecordId?recordId=${recordId}&page=${currentPage - 1}&size=${reviewsPerPage}`;
+         const reviewUrl: string = `${process.env.REACT_APP_API}/reviews/search/findByRecordId?recordId=${recordId}&page=${currentPage - 1}&size=${reviewsPerPage}`;
    
          const responseReviews = await fetch(reviewUrl);
    
