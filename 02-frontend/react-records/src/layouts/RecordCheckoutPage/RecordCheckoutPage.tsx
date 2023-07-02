@@ -33,6 +33,9 @@ const RecordCheckoutPage = () => {
   const[isCheckedOut, setIsCheckedOut] = useState(false);
   const [isLoadingRecordCheckedOut, setIsLoadingRecordCheckedOut] = useState(true)
 
+  // Payment
+  const [displayError, setDisplayError] = useState(false);
+
   //expose record id
   const recordId = window.location.pathname.split("/")[2]; //recordsapp.com/checkout/**id**
 
@@ -239,8 +242,10 @@ const RecordCheckoutPage = () => {
    }
    const checkoutResponse = await fetch(url, requestOptions);
    if (!checkoutResponse.ok){
-      throw new Error('Something went wrong')
+      setDisplayError(true);
+      throw new Error('Something went wrong');
    }
+   setDisplayError(false);
    setIsCheckedOut(true);
   }
 
@@ -275,6 +280,11 @@ const RecordCheckoutPage = () => {
   return (
     <div>
       <div className="container d-none d-lg-block">
+         {displayError && 
+            <div className="alert alert-danger mt-3" role="alert">
+               Please pay outstanding fees or return late record(s)
+           </div>
+         }
          <div className="row mt-5">
             <div className="col-sm-2 col-md-2">
                {record?.img ?
@@ -298,6 +308,11 @@ const RecordCheckoutPage = () => {
          <LatestReviews reviews={reviews} recordId={record?.id} mobile = {false}/>
       </div>
       <div className="container d-lg-none mt-5"> {/* Mobile view container */}
+      {displayError && 
+            <div className="alert alert-danger mt-3" role="alert">
+               Please pay outstanding fees or return late record(s)
+           </div>
+         }
          <div className="d-flex justify-content-center align-items-center">
                {record?.img ?
                   <img src={record.img} width='280' height='300' alt="Record" />

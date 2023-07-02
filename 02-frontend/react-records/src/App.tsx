@@ -15,6 +15,7 @@ import LoginWidget from './Auth/LoginWidget';
 import ShelfPage from './layouts/ShelfPage/ShelfPage';
 import MessagesPage from './layouts/MessagesPage/MessagesPage';
 import ManageRecordsPage from './layouts/ManageRecordsPage/ManageRecordsPage';
+import PaymentPage from './layouts/PaymentPage/PaymentPage';
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -58,6 +59,7 @@ export function App() {
           <SecureRoute path="/shelf"> <ShelfPage/> </SecureRoute>
           <SecureRoute path='/messages'> <MessagesPage/> </SecureRoute>
           <SecureRoute path='/admin'> <ManageRecordsPage/> </SecureRoute>
+          <SecureRoute path='/fees'> <PaymentPage/> </SecureRoute>
           </Switch>
         </div>
         <Footer />

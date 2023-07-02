@@ -3,15 +3,18 @@ package com.records.springbootrecords.service;
 
 import com.records.springbootrecords.dao.CheckoutRepository;
 import com.records.springbootrecords.dao.HistoryRepository;
+import com.records.springbootrecords.dao.PaymentRepository;
 import com.records.springbootrecords.dao.RecordsRepository;
 import com.records.springbootrecords.entity.Checkout;
 import com.records.springbootrecords.entity.History;
+import com.records.springbootrecords.entity.Payment;
 import com.records.springbootrecords.entity.Record;
 import com.records.springbootrecords.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,11 +31,14 @@ public class RecordService {
     private RecordsRepository recordsRepository;
     private CheckoutRepository checkoutRepository;
     private HistoryRepository historyRepository;
+    private PaymentRepository paymentRepository;
 
-    public RecordService(RecordsRepository recordsRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository){
+    @Autowired
+    public RecordService(RecordsRepository recordsRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository, PaymentRepository paymentRepository){
         this.recordsRepository = recordsRepository;
         this.checkoutRepository = checkoutRepository;
         this.historyRepository = historyRepository;
+        this.paymentRepository = paymentRepository;
     }
 
 
@@ -46,13 +52,48 @@ public class RecordService {
             throw new Exception("Record doesn't exist or is already checked out by user!");
         }
 
+        List<Checkout> currentRecordsCheckout = checkoutRepository.findRecordsByUserEmail(userEmail);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        boolean recordNeedsReturned = false;
+
+        for(Checkout c: currentRecordsCheckout){
+            Date d1 = sdf.parse(c.getReturnDate());
+            Date d2 = sdf.parse(LocalDate.now().toString());
+
+            TimeUnit time = TimeUnit.DAYS;
+
+            double differenceInTime = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
+
+            if(differenceInTime < 0){
+                recordNeedsReturned = true;
+                break;
+            }
+        }
+
+        Payment userPayment = paymentRepository.findByUserEmail(userEmail);
+
+        if((userPayment != null && userPayment.getAmount() > 0) || (userPayment != null && recordNeedsReturned)){
+            throw new Exception("Outstanding fees...");
+        }
+
+        if(userPayment == null){
+
+            Payment payment = new Payment();
+            payment.setAmount(00.00);
+            payment.setUserEmail(userEmail);
+
+            paymentRepository.save(payment);
+        }
+
         record.get().setCopiesAvailable(record.get().getCopiesAvailable() - 1);
         recordsRepository.save(record.get());
-
 
         Checkout checkout = new Checkout(
                 userEmail,
                 LocalDate.now().toString(),
+                LocalDate.now().plusDays(7).toString(),
                 record.get().getId()
         );
 
@@ -124,6 +165,23 @@ public class RecordService {
         record.get().setCopiesAvailable(record.get().getCopiesAvailable() + 1);
 
         recordsRepository.save(record.get());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date d1 = sdf.parse(validateCheckout.getReturnDate());
+        Date d2 = sdf.parse(LocalDate.now().toString());
+
+        TimeUnit time = TimeUnit.DAYS;
+
+        double differenceInTime = time.convert(d1.getTime() - d2.getTime(), TimeUnit.MILLISECONDS);
+
+        if(differenceInTime < 0){
+            Payment payment = paymentRepository.findByUserEmail(userEmail);
+
+            payment.setAmount(payment.getAmount() + (differenceInTime * -1));
+            paymentRepository.save(payment);
+        }
+
         checkoutRepository.deleteById(validateCheckout.getId());
 
         // save history object to DB
